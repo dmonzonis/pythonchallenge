@@ -1,0 +1,3 @@
+Going to http://www.pythonchallenge.com/pc/def/hockey.html tells us that
+"it's in the air. look at the letters.", referring to the letters that compose
+the word HOCKEY in the solution. The answer is not hockey, but oxygen!
