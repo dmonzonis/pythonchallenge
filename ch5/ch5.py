@@ -3,6 +3,7 @@ import requests
 
 URL = "http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing="
 
+
 def traverse(value):
     document = requests.get(URL + value).text
     regex = re.compile(r"and the next nothing is (\d+)")
@@ -16,6 +17,7 @@ def traverse(value):
 
     # Done, print the whole document for info
     print(document)
+
 
 # Starting value
 #  traverse("12345")
