@@ -1,17 +1,14 @@
 import re
 import requests
 
-URL = "http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing="
 
-
-def traverse(value):
-    document = requests.get(URL + value).text
-    regex = re.compile(r"and the next nothing is (\d+)")
+def traverse(regex, url, value=''):
+    document = requests.get(url + value).text
     match = re.search(regex, document)
 
     while match is not None:
-        value = match.group(1)  # Get the number in the match
-        document = requests.get(URL + value).text
+        value = match.group(1)  # Get the wanted value in the match
+        document = requests.get(url + value).text
         match = re.search(regex, document)
         print(value)
 
@@ -19,8 +16,16 @@ def traverse(value):
     print(document)
 
 
-# Starting value
-#  traverse("12345")
+def main():
+    url = "http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing="
+    regex = re.compile(r"and the next nothing is (\d+)")
 
-# Second part
-traverse("8022")
+    # Starting value
+    #  traverse(regex, url, "12345")
+
+    # Second part
+    traverse(regex, url, "8022")
+
+
+if __name__ == "__main__":
+    main()
