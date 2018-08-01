@@ -1,26 +1,16 @@
-from PIL import Image
+import bz2
 
 
-def decode_image_message(filename):
-    image = Image.open(filename)
-    width, height = image.size
-
-    values = []
-    for x in range(0, width, 7):
-        pixel = image.getpixel((x, height // 2))
-        gray_level = pixel[0]
-        values.append(gray_level)
-
-    image.close()
-    return "".join(chr(v) for v in values)
+def decode_string(data):
+    return bz2.decompress(data).decode('utf-8')
 
 
 def main():
-    print(decode_image_message("oxygen.png"))
-    # Message:
-    # smart guy, you made it. the next level is [105, 110, 116, 101, 103, 114, 105, 116, 121]
-    next_level = [105, 110, 116, 101, 103, 114, 105, 116, 121]
-    print("".join(chr(v) for v in next_level))
+    un = b'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+    pw = b'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
+
+    print("username:", decode_string(un))
+    print("password:", decode_string(pw))
 
 
 if __name__ == "__main__":

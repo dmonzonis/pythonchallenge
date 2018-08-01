@@ -1,8 +1,6 @@
-rot2 = str.maketrans("abcdefghijklmnopqrstuvwxyz",
-                     "cdefghijklmnopqrstuvwxyzab")
+import re
 
 with open("input.txt") as inp:
-    orig = inp.read()
+    mess = inp.read()
 
-print(orig.translate(rot2))
-print("map".translate(rot2))
+print(re.sub(r"[^a-zA-Z]", "", mess))

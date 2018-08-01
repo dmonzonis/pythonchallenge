@@ -1,38 +1,27 @@
-import re
-import zipfile
+from PIL import Image
 
 
-def traverse(value, zip_file):
-    values = [value]
-    while True:
-        with zip_file.open(value + ".txt") as next_file:
-            regex = re.compile(r"Next nothing is (\d+)")
-            data = next_file.read()
-            decoded_text = data.decode("utf-8")
-            match = re.match(regex, decoded_text)
-            if match is None:
-                break
-            value = match.group(1)
-            values.append(value)
+def decode_image_message(filename):
+    image = Image.open(filename)
+    width, height = image.size
 
-    # Done, print the whole document
-    print(decoded_text)
-    # Return the list of ordered values encountered
-    return values
+    values = []
+    for x in range(0, width, 7):
+        pixel = image.getpixel((x, height // 2))
+        gray_level = pixel[0]
+        values.append(gray_level)
+
+    image.close()
+    return "".join(chr(v) for v in values)
 
 
-def collect_comments(values, zip_file):
-    comments = []
-    for value in values:
-        comment = zip_file.getinfo(value + ".txt").comment.decode("utf-8")
-        comments.append(comment)
+def main():
+    print(decode_image_message("oxygen.png"))
+    # Message:
+    # smart guy, you made it. the next level is [105, 110, 116, 101, 103, 114, 105, 116, 121]
+    next_level = [105, 110, 116, 101, 103, 114, 105, 116, 121]
+    print("".join(chr(v) for v in next_level))
 
-    return "".join(c for c in comments)
 
-
-with zipfile.ZipFile("channel.zip") as channel:
-    initial_value = "90052"
-    values = traverse(initial_value, channel)
-    # Collect the comments
-    message = collect_comments(values, channel)
-    print(message)
+if __name__ == "__main__":
+    main()

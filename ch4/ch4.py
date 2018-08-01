@@ -1,7 +1,31 @@
 import re
+import requests
 
-with open("input.txt") as inp:
-    mess = inp.read()
 
-matches = re.findall(r"[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]", mess)
-print("".join(matches))
+def traverse(regex, url, value=''):
+    document = requests.get(url + value).text
+    match = re.search(regex, document)
+
+    while match is not None:
+        value = match.group(1)  # Get the wanted value in the match
+        document = requests.get(url + value).text
+        match = re.search(regex, document)
+        print(value)
+
+    # Done, print the whole document for info
+    print(document)
+
+
+def main():
+    url = "http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing="
+    regex = re.compile(r"and the next nothing is (\d+)")
+
+    # Starting value
+    #  traverse(regex, url, "12345")
+
+    # Second part
+    traverse(regex, url, "8022")
+
+
+if __name__ == "__main__":
+    main()
